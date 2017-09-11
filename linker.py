@@ -14,7 +14,10 @@ events = [
 ]
 
 for ev in events:
-	shutil.rmtree(ev)
+	try:
+		shutil.rmtree(ev)
+	except:
+		pass
 
 for ev in events:
 	os.mkdir(ev)
@@ -23,4 +26,4 @@ with open("train.txt", "r") as fin:
 	for filename, mask in [line.split() for line in fin.readlines()]:
 		for i in range(len(mask)):
 			if int(mask[i]):
-				subprocess.run(["ln", "-s", filename, events[i] + "/" + filename])
+				subprocess.run(["ln", filename, events[i] + "/" + filename])

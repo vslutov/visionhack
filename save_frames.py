@@ -32,7 +32,6 @@ def main():
         while True:
             ret, frame = cap.read()
             if ret:
-                h, w, c = frame.shape
                 frame = cv2.resize(frame, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
                 out_path = '{}/{}.jpg'.format(out_video_dir, num_frame)
                 cv2.imwrite(out_path, frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
