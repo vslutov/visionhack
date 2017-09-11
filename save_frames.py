@@ -4,6 +4,7 @@ import os
 import tqdm
 import skvideo.io
 import skimage.io
+import skimage.transform
 
 def main():
     parser = argparse.ArgumentParser()
@@ -32,10 +33,9 @@ def main():
         num_frame = 0
 
         for frame in reader.nextFrame():
-            frame = cv2.resize(frame, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
+            frame = skimage.transform.resize(frame, (299, 299))
             out_path = '{}/{}.jpg'.format(out_video_dir, num_frame)
             skimage.io.imsave(out_path, frame)
-            # cv2.imwrite(out_path, frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
             num_frame += 1
         print("Video {} is ready!".format(video_name))
 

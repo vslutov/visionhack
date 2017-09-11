@@ -68,7 +68,7 @@ def save_data(indir, outdir, y, ignore):
             frame = skimage.transform.resize(frame, (299, 299))
             cl = y[video_name][num_frame]
             out_path = "{}/{}/{}.npy".format(outdir, cl, counter)
-            new_y.append(counter)
+            new_y.append(cl)
             counter += 1
             mapping.append("{}:{}".format(video_name, num_frame))
             np.save(out_path, frame)
