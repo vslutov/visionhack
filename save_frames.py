@@ -2,6 +2,8 @@ import cv2
 import argparse
 import os
 import tqdm
+import skvideo.io
+import skimage.io
 
 def main():
     parser = argparse.ArgumentParser()
@@ -18,7 +20,7 @@ def main():
         os.mkdir(outdir)
 
 
-    video_names = os.listdir(indir)
+    video_names = sorted(os.listdir(indir))
     video_names = filter(lambda x: os.path.splitext(x)[1] == '.avi', video_names)
     for video_name in tqdm.tqdm(video_names):
         full_name = os.path.join(indir, video_name)
@@ -26,18 +28,15 @@ def main():
         if not os.path.exists(out_video_dir):
             os.mkdir(out_video_dir)
 
-        cap = cv2.VideoCapture(full_name)
+        reader = skvideo.io.FFmpegReader(full_name)
         num_frame = 0
 
-        while True:
-            ret, frame = cap.read()
-            if ret:
-                frame = cv2.resize(frame, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
-                out_path = '{}/{}.jpg'.format(out_video_dir, num_frame)
-                cv2.imwrite(out_path, frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
-                num_frame += 1
-            else:
-                break
+        for frame in reader.nextFrame():
+            frame = cv2.resize(frame, None, fx=scale, fy=scale, interpolation=cv2.INTER_CUBIC)
+            out_path = '{}/{}.jpg'.format(out_video_dir, num_frame)
+            skimage.io.imsave(out_path, frame)
+            # cv2.imwrite(out_path, frame, [int(cv2.IMWRITE_JPEG_QUALITY), 90])
+            num_frame += 1
         print("Video {} is ready!".format(video_name))
 
 if __name__ == '__main__':
