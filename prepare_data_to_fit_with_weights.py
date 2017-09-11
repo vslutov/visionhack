@@ -40,7 +40,7 @@ def parse_mark_line(line):
 def create_classes(video_names, marks_files):
     global labels
     y = {
-        video_name: [[0] * len(labels) for i in range(400)] 
+        video_name: [[0] * len(labels) for i in range(400)]
         for video_name in video_names
     }
     to_remove = {video_name: set() for video_name in video_names}
@@ -81,7 +81,7 @@ def save_data(indir, outdir, y, ignore):
 
     mapping = []
     new_y = []
-    for video_name in tqdm.tqdm(sorted(y.keys())[:4]):
+    for video_name in tqdm.tqdm(sorted(y.keys())):
         full_name = os.path.join(indir, video_name)
         if not os.path.exists(full_name):
             continue
@@ -122,11 +122,11 @@ def main():
     ]
 
     marks_names = [
-        os.path.join(args.m, name) 
+        os.path.join(args.m, name)
         for name in sorted(os.listdir(args.m))
         if os.path.splitext(name)[1] == ".txt"
     ]
-    
+
     y, ignore = create_classes(video_names, marks_names)
     print("Marks parsed")
     save_data(indir, outdir, y, ignore)
