@@ -38,6 +38,7 @@ def main():
                 num_frame += 1
             else:
                 break
+        print("Video {} is ready!".format(video_name))
 
 if __name__ == '__main__':
     main()
