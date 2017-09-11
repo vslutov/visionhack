@@ -9,7 +9,7 @@ import skimage.io
 import skimage.transform
 import shutil
 
-labels = ["z", "c", "m", "t", "d", "b", "e", "x"]
+labels = ["z", "c", "m", "t", "d", "b", "e", "x", "f"]
 labels = {letter: labels.index(letter) for letter in labels}
 
 def parse_mark(mark):
@@ -33,6 +33,7 @@ def create_classes(video_names, marks_files):
                     label, low, high = parse_mark(mark)
                     if label != "u":
                         for i in range(low, high + 1):
+                            print(i, video_name, mark_file)
                             y[video_name][i] |= (1 << labels[label])
                     else:
                         for i in range(low, high + 1):
