@@ -20,4 +20,4 @@ akn.394.008.left.avi x0-44 u45-46
 akn.420.236.left.avi x101-156 u157-158
 akn.421.255.left.avi x64-97 u98-99
 akn.429.105.left.avi x14-63 u64-65
-akn.431.139.left.avi x149-282 x283-284
+akn.431.139.left.avi x149-282 u283-284
