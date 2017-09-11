@@ -36,7 +36,7 @@ def main():
 
         result = extractor.predict(np.array(frames[:302]), batch_size=64)
         out_path = os.path.join(outdir, video_name + ".npy")
-        np.save(out_path, result.reshape((-1,)))
+        np.save(out_path, result)
 
 if __name__ == '__main__':
     main()
