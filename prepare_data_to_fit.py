@@ -32,7 +32,7 @@ def create_classes(video_names, marks_files):
                 for mark in marks:
                     label, low, high = parse_mark(mark)
                     if label != "u":
-                        for i in range(low, high + 1):
+                        for i in range(low, min(303, high + 1)):
                             print(i, video_name, mark_file)
                             y[video_name][i] |= (1 << labels[label])
                     else:
