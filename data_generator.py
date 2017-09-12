@@ -1,5 +1,8 @@
 import keras.preprocessing.image
 import numpy as np
+import os.path
+from random import shuffle
+import skimage.io
 
 def convert_class(class_number, count_bit):
     class_number = int(class_number)
@@ -49,7 +52,7 @@ def custom_generator(path, batch_size):
     imgs_files = sorted(i for i in os.listdir(path) if i.endswith(".jpg"))
     with open(os.path.join(path, "y.txt")) as fin:
         y = [[float(i) for i in line.split()] for line in fin.readlines()]
-    indices = list(range(len(y)))
+    indices = list(range(len(imgs_files)))
     while True:
         shuffle(indices)
         for b_start in range(0, len(indices) // batch_size * batch_size, batch_size):
@@ -58,7 +61,7 @@ def custom_generator(path, batch_size):
                 for i in range(b_start, min(len(indices), b_start + batch_size))
             ]
             sub_y = [
-                y[indices[i]]
+                y[int(imgs_files[indices[i]].split('.')[0])]
                 for i in range(b_start, min(len(indices), b_start + batch_size))
             ]
-            yield imgs, sub_y
+            yield np.array(imgs)[:, ::2, ::2, :], np.array(sub_y)
