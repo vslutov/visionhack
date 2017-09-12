@@ -1,3 +1,6 @@
+import keras.preprocessing.image
+import numpy as np
+
 def convert_class(class_number, count_bit):
     class_number = int(class_number)
     class_number = bin(class_number)[2:]
@@ -7,7 +10,7 @@ def convert_class(class_number, count_bit):
 
 class WrapperDirectoryIterator(keras.preprocessing.image.DirectoryIterator):
     def __init__(self, *args, **kwargs):
-        super(WrapperDirectoryIterator, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         marks = list(self.class_indices.values())
         classes = list(self.class_indices.keys())
@@ -15,7 +18,7 @@ class WrapperDirectoryIterator(keras.preprocessing.image.DirectoryIterator):
         self.invert_class_indices = dict(zip(marks, classes))
 
     def next(self, *args, **kwargs):
-        X, y = super(WrapperDirectoryIterator, self).next(*args, **kwargs)
+        X, y = super().next(*args, **kwargs)
         new_y = []
         for val in y.argmax(axis=1):
             new_y.append(self.invert_class_indices[val])
