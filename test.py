@@ -6,22 +6,17 @@ import skvideo.io
 import skimage.io
 import skimage.transform
 import numpy as np
-from models import extractor
-
+from keras.applications.inception_v3 import preprocess_input
 
 def predict_labels(video_path, extractor, img_shape, batch_size=64):
-    reader = cv2.VideoCapture(video_path)
+    reader = skvideo.io.FFmpegReader(video_path)
     num_frame = 0
     frames = []
 
-    while True:
-        ret, frame = reader.read()
-        if ret:
-            frame = cv2.resize(frame, dsize=img_shape)
-            frames.append(frame)
-        else:
-            break
-    result = extractor.predict(np.array(frames[:302]), batch_size=batch_size)
+    for frame in reader.nextFrame():
+        frame = cv2.resize(frame, dsize=img_shape)
+        frames.append(frame)
+    result = extractor.predict(preprocess_input(np.array(frames[:302])), batch_size=batch_size)
     return result
 
 def main():
