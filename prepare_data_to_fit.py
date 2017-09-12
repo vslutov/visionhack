@@ -8,6 +8,7 @@ import skvideo.io
 import skimage.io
 import skimage.transform
 import shutil
+import cv2
 
 labels = ["z", "c", "m", "t", "d", "b", "e", "x", "f"]
 labels = {letter: labels.index(letter) for letter in labels}
@@ -68,11 +69,11 @@ def save_data(indir, outdir, y, ignore):
                 continue
             frame = skimage.transform.resize(frame, (299, 299))
             cl = y[video_name][num_frame]
-            out_path = "{}/{}/{}.npy".format(outdir, cl, counter)
+            out_path = "{}/{}/{}.jpg".format(outdir, cl, counter)
             new_y.append(cl)
             counter += 1
             mapping.append("{}:{}".format(video_name, num_frame))
-            np.save(out_path, frame)
+            skimage.io.imsave(out_path, frame)
         print("Video {} is ready!".format(video_name))
 
     save_file(outdir, "y", new_y)
