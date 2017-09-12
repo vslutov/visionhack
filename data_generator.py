@@ -3,6 +3,8 @@ import numpy as np
 import os.path
 from random import shuffle
 import skimage.io
+import aug_img
+
 
 def convert_class(class_number, count_bit):
     class_number = int(class_number)
@@ -48,6 +50,7 @@ class WrapperImageDataGenerator(keras.preprocessing.image.ImageDataGenerator):
             save_format=save_format,
             follow_links=follow_links)
 
+
 def custom_generator(path, batch_size):
     imgs_files = sorted(i for i in os.listdir(path) if i.endswith(".jpg"))
     with open(os.path.join(path, "y.txt")) as fin:
@@ -64,4 +67,6 @@ def custom_generator(path, batch_size):
                 y[int(imgs_files[indices[i]].split('.')[0])]
                 for i in range(b_start, min(len(indices), b_start + batch_size))
             ]
-            yield np.array(imgs)[:, ::2, ::2, :], np.array(sub_y)
+            X = np.array(imgs)[:, ::2, ::2, :]
+            X = aug_img.aug(X)
+            yield X, np.array(sub_y)
