@@ -25,4 +25,4 @@ top = base_model.layers[-1].output
 top = Dense(9, activation='sigmoid')(top)
 
 framelabel_predictor = Model(base_model.input, top)
-framelabel_predictor.summary()
+framelabel_predictor.compile(loss='binary_crossentropy', optimizer='nadam', metrics=['accuracy'])
