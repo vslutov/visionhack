@@ -81,25 +81,27 @@ def save_data(indir, outdir, y, ignore):
 
     mapping = []
     new_y = []
-    for video_name in tqdm.tqdm(sorted(y.keys())):
-        full_name = os.path.join(indir, video_name)
-        if not os.path.exists(full_name):
-            continue
-        reader = skvideo.io.FFmpegReader(full_name)
-
-        for num_frame, frame in enumerate(reader.nextFrame()):
-            if num_frame in ignore[video_name]:
+    with open(os.path.join(outdir, "y.txt"), "w") as fout_y:
+        for video_name in tqdm.tqdm(sorted(y.keys())):
+            full_name = os.path.join(indir, video_name)
+            if not os.path.exists(full_name):
                 continue
-            frame = skimage.transform.resize(frame, (299, 299))
-            cl = y[video_name][num_frame]
-            out_path = "{}/{}.npy".format(outdir, counter)
-            new_y.append(cl)
-            counter += 1
-            mapping.append(["{}:{}".format(video_name, num_frame)])
-            np.save(out_path, frame)
-        print("Video {} is ready!".format(video_name))
+            reader = skvideo.io.FFmpegReader(full_name)
 
-    save_file(outdir, "y", new_y)
+            for num_frame, frame in enumerate(reader.nextFrame()):
+                if num_frame in ignore[video_name]:
+                    continue
+                frame = frame[::2, ::2, :]
+                out_path = "{}/{}.jpg".format(outdir, counter)
+                counter += 1
+                mapping.append(["{}:{}".format(video_name, num_frame)])
+                skimage.io.imsave(out_path, frame)
+
+                cl = y[video_name][num_frame]
+                fout_y.write(" ".join([str(i) for i in cl]) + "\n")
+
+            print("Video {} is ready!".format(video_name))
+
     save_file(outdir, "mapping", mapping)
 
 def main():
