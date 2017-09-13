@@ -47,4 +47,4 @@ class Y(object):
             + self._get_features_from_seg_len()
             + self._get_features_from_inc_len()
             + self._get_features_from_dec_len()
-        )
+        ) + list(self.values[:5]) + list(self.values[-5:])

@@ -82,7 +82,7 @@ def save_data(indir, outdir, y, ignore):
     mapping = []
     new_y = []
     with open(os.path.join(outdir, "y.txt"), "w") as fout_y:
-        for video_name in tqdm.tqdm(sorted(y.keys())):
+        for video_name in tqdm.tqdm(sorted(y.keys())[:4]):
             full_name = os.path.join(indir, video_name)
             if not os.path.exists(full_name):
                 continue
