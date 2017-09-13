@@ -6,11 +6,10 @@ import skvideo.io
 import skimage.io
 import skimage.transform
 import numpy as np
-from keras.applications.inception_v3 import preprocess_input
 
 from models import extractor
 
-def predict_labels(video_path, extractor, img_shape, batch_size=16):
+def predict_labels(video_path, extractor, img_shape, preprocess_input, batch_size=16):
     reader = skvideo.io.FFmpegReader(video_path)
     num_frame = 0
     frames = []
